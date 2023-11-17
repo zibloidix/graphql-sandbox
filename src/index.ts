@@ -12,6 +12,7 @@ const typeDefs = `#graphql
     id: String
     title: String
     author: String
+    year: String
   }
 
   # The "Query" type is special: it lists all of the available queries that
