@@ -20,20 +20,24 @@ const typeDefs = `#graphql
   # clients can execute, along with the return type for each. In this
   # case, the "books" query returns an array of zero or more Books (defined above).
   type Query {
-    books: [Book]
+    books(id: String, year: String, type: String): [Book]
   }
 `;
 
-const books = [
+const _books = [
   {
     id: "001",
     title: "The Awakening",
     author: "Kate Chopin",
+    year: "2012",
+    type: "Roman",
   },
   {
     id: "002",
     title: "City of Glass",
     author: "Paul Auster",
+    year: "2000",
+    type: "Roman",
   },
 ];
 
@@ -41,7 +45,17 @@ const books = [
 // schema. This resolver retrieves books from the "books" array above.
 const resolvers = {
   Query: {
-    books: () => books,
+    books: (root, { id, year, type }) =>
+      _books.filter((book) => {
+        return book.id == id || book.year == year || book.type == type;
+      }),
+  },
+  Mutation: {
+    addBook: (root, { id, year, type, title, author }) => {
+      const _book = { id, year, type, title, author };
+      _books.push(_book);
+      return _book;
+    },
   },
 };
 
